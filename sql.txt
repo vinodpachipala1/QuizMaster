@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS quizzes (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  category VARCHAR(100),
+  time_limit INT,
+  created_by INT REFERENCES users(id) ON DELETE CASCADE,
+  questions JSONB,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS attempts (
+  id SERIAL PRIMARY KEY,
+  quiz_id INT REFERENCES quizzes(id) ON DELETE CASCADE,
+  user_id INT REFERENCES users(id) ON DELETE CASCADE,
+  score INT,
+  attempted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
