@@ -12,7 +12,7 @@ const port = 3001;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://quiz-master-ivory.vercel.app",
     credentials: true,
   })
 );
