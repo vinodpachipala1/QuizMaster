@@ -9,7 +9,7 @@ import CreateQuizPage from "../pages/CreateQuiz";
 import QuizPage from "../pages/QuizPage";
 import Dashboard from "../pages/Dashboard";
 
-const Router = () => {
+const Router = () => { 
   return (
     <BrowserRouter>
     
