@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../config/BaseUrl";
+import { 
+  LuTarget, 
+  LuSquarePen, 
+  LuRocket, 
+  LuChartColumn 
+} from "react-icons/lu";
 
 const Home = () => {
   const navigate = useNavigate();
   const [user, SetUser] = useState(false);
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -31,8 +36,8 @@ const Home = () => {
     <div>
       <div className="relative w-full max-w-6xl mx-auto text-center px-4 sm:px-6">
         <div className="mb-8 sm:mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full mb-6 shadow-lg">
-            <span className="text-3xl sm:text-4xl">🎯</span>
+          <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full mb-6 shadow-lg text-white">
+            <LuTarget size={40} className="sm:w-[48px] sm:h-[48px]" />
           </div>
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 bg-clip-text text-transparent px-2 mb-4">
             Quiz Master
@@ -77,7 +82,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300 mx-2 sm:mx-0">
             <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <span className="text-2xl">📝</span>
+              <LuSquarePen className="text-pink-600" size={24} />
             </div>
             <h3 className="font-semibold text-gray-800 text-lg mb-2">
               Create Quizzes
@@ -89,7 +94,7 @@ const Home = () => {
 
           <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300 mx-2 sm:mx-0">
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <span className="text-2xl">🚀</span>
+              <LuRocket className="text-purple-600" size={24} />
             </div>
             <h3 className="font-semibold text-gray-800 text-lg mb-2">
               Take Quizzes
@@ -101,7 +106,7 @@ const Home = () => {
 
           <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300 mx-2 sm:mx-0">
             <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <span className="text-2xl">📊</span>
+              <LuChartColumn className="text-indigo-600" size={24} />
             </div>
             <h3 className="font-semibold text-gray-800 text-lg mb-2">
               Track Progress

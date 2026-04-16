@@ -3,7 +3,17 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../config/BaseUrl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock } from "lucide-react";
+import { 
+  Clock, 
+  ChevronLeft, 
+  ChevronRight, 
+  CheckCircle, 
+  AlertCircle, 
+  StopCircle, 
+  ArrowLeft, 
+  Check,
+  ClipboardCheck
+} from "lucide-react";
 import QuestionCard from "../components/QuestionCard";
 import ResultPage from "../components/ResultPage";
 
@@ -239,8 +249,9 @@ const QuizPage = () => {
 
   if (quizState === "not_found" || !quiz) {
     return (
-      <div className="flex items-center justify-center text-center p-4">
+      <div className="flex items-center justify-center text-center p-4 min-h-[50vh]">
         <div>
+          <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h2 className="text-3xl font-bold text-gray-700 mb-4">
             Quiz Not Found
           </h2>
@@ -249,9 +260,9 @@ const QuizPage = () => {
           </p>
           <button
             onClick={() => navigate("/quizzes")}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl"
+            className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 mx-auto"
           >
-            Go to Quizzes
+            <ArrowLeft size={18} /> Go to Quizzes
           </button>
         </div>
       </div>
@@ -300,7 +311,7 @@ const QuizPage = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Question Area */}
           <div className="flex-1">
-            {/* ✨ QUESTION CARD CONTAINER: Added glossy effect */}
+            {/* QUESTION CARD CONTAINER: Added glossy effect */}
             <div className="bg-white/30 backdrop-blur-xl rounded-2xl shadow-2xl p-6 border border-white/40 bg-gradient-to-b from-white/50 to-white/20">
               <AnimatePresence mode="wait">
                 <QuestionCard
@@ -318,23 +329,23 @@ const QuizPage = () => {
               <button
                 onClick={handlePrevious}
                 disabled={currentQuestionIndex === 0}
-                className="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg shadow-md hover:bg-gray-100 disabled:opacity-50 transition-all"
+                className="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg shadow-md hover:bg-gray-100 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
               >
-                Previous
+                <ChevronLeft size={18} /> Previous
               </button>
               {currentQuestionIndex === questions.length - 1 ? (
                 <button
                   onClick={handleSubmitQuiz}
-                  className="px-8 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-lg hover:bg-green-700 transition-transform transform hover:scale-105"
+                  className="px-8 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-lg hover:bg-green-700 transition-transform transform hover:scale-105 flex items-center justify-center gap-2"
                 >
-                  Submit Quiz
+                  <CheckCircle size={18} /> Submit Quiz
                 </button>
               ) : (
                 <button
                   onClick={handleNext}
-                  className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105"
+                  className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 flex items-center justify-center gap-2"
                 >
-                  Next
+                  Next <ChevronRight size={18} />
                 </button>
               )}
             </div>
@@ -364,9 +375,9 @@ const QuizPage = () => {
               </div>
               <button
                 onClick={handleSubmitQuiz}
-                className="w-full mt-4 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition-all"
+                className="w-full mt-4 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition-all flex items-center justify-center gap-2"
               >
-                End & Submit Quiz
+                <StopCircle size={18} /> End & Submit Quiz
               </button>
             </div>
           </div>
@@ -380,8 +391,8 @@ const QuizPage = () => {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-inner-sm"
           >
-            <h3 className="text-xl font-bold text-gray-800 mb-4">
-              Ready to Submit?
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <ClipboardCheck className="text-indigo-600" size={24} /> Ready to Submit?
             </h3>
             <p className="text-gray-600 mb-6">
               You have answered{" "}
@@ -398,14 +409,14 @@ const QuizPage = () => {
               <button
                 onClick={() => setShowSubmitModal(false)}
                 disabled={submissionLoading}
-                className="flex-1 py-2.5 bg-slate-200 text-slate-800 font-semibold rounded-lg hover:bg-slate-300 transition-colors disabled:opacity-50"
+                className="flex-1 py-2.5 bg-slate-200 text-slate-800 font-semibold rounded-lg hover:bg-slate-300 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
-                Go Back
+                <ArrowLeft size={18} /> Go Back
               </button>
               <button
                 onClick={confirmSubmit}
                 disabled={submissionLoading}
-                className="flex-1 py-2.5 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center justify-center"
+                className="flex-1 py-2.5 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {submissionLoading ? (
                   <>
@@ -413,7 +424,9 @@ const QuizPage = () => {
                     Submitting...
                   </>
                 ) : (
-                  "Confirm & Submit"
+                  <>
+                    <Check size={18} /> Confirm & Submit
+                  </>
                 )}
               </button>
             </div>

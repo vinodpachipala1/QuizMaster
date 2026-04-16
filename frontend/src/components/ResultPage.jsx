@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Check, X } from "lucide-react";
+import { Check, X, Trophy, RotateCcw, ArrowLeft } from "lucide-react";
 
 // ScoreCircle adapted for the new glassmorphism layout
 const ScoreCircle = ({ score, total }) => {
@@ -72,7 +72,9 @@ const ResultPage = ({ questions, userAnswers, quizTitle, onRestart, onBackToQuiz
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="bg-white/60 backdrop-blur-lg rounded-2xl border border-white/30 shadow-lg p-6 sm:p-8 text-center"
         >
-          <h1 className="text-2xl font-semibold text-slate-700">Results for</h1>
+          <h1 className="text-2xl font-semibold text-slate-700 flex items-center justify-center gap-2">
+            <Trophy className="text-yellow-500" size={28} /> Results for
+          </h1>
           <p className="text-3xl sm:text-4xl font-bold text-indigo-600 mt-1 mb-6">{quizTitle}</p>
           
           <div className="my-8 flex justify-center">
@@ -86,15 +88,15 @@ const ResultPage = ({ questions, userAnswers, quizTitle, onRestart, onBackToQuiz
           <div className="flex flex-col sm:flex-row gap-3">
             <button 
               onClick={onRestart} 
-              className="flex-1 py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Try Again
+              <RotateCcw size={18} /> Try Again
             </button>
             <button 
               onClick={onBackToQuizzes} 
-              className="flex-1 py-3 px-4 bg-white/80 text-indigo-700 font-semibold rounded-lg border border-indigo-200 hover:bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/80 text-indigo-700 font-semibold rounded-lg border border-indigo-200 hover:bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Back to Quizzes
+              <ArrowLeft size={18} /> Back to Quizzes
             </button>
           </div>
         </motion.div>

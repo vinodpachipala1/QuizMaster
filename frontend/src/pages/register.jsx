@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../config/BaseUrl";
+import { User, Mail, Lock, Loader2, Target } from "lucide-react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -38,8 +39,13 @@ const RegisterPage = () => {
 
       <div className="relative w-full max-w-sm md:max-w-md">
         <div className="text-center mb-4 sm:mb-6">
-          <h1 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 bg-clip-text text-transparent">
-            Join Quiz Master
+          <h1 className="text-3xl sm:text-4xl font-bold flex items-center justify-center gap-3 sm:gap-4">
+            <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full shadow-lg text-white flex-shrink-0">
+              <Target className="w-5 h-5 sm:w-6 sm:h-6" />
+            </div>
+            <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 bg-clip-text text-transparent whitespace-nowrap">
+              Join Quiz Master
+            </span>
           </h1>
           <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-lg">
             Unlock a world of quizzes!
@@ -58,19 +64,7 @@ const RegisterPage = () => {
                   htmlFor="fullName"
                   className="text-xs sm:text-sm font-semibold text-gray-700 flex items-center"
                 >
-                  <svg
-                    className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-purple-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
+                  <User className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-purple-500" />
                   Full Name
                 </label>
                 <input
@@ -91,19 +85,7 @@ const RegisterPage = () => {
                   htmlFor="email"
                   className="text-xs sm:text-sm font-semibold text-gray-700 flex items-center"
                 >
-                  <svg
-                    className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-purple-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                    />
-                  </svg>
+                  <Mail className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-purple-500" />
                   Email Address
                 </label>
                 <input
@@ -127,19 +109,7 @@ const RegisterPage = () => {
                   htmlFor="password"
                   className="text-xs sm:text-sm font-semibold text-gray-700 flex items-center"
                 >
-                  <svg
-                    className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-purple-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
+                  <Lock className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-purple-500" />
                   Password
                 </label>
                 <input
@@ -168,26 +138,7 @@ const RegisterPage = () => {
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-2 h-3 w-3 sm:h-4 sm:w-4 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
+                    <Loader2 className="animate-spin -ml-1 mr-2 h-3 w-3 sm:h-4 sm:w-4 text-white" />
                     <span className="text-xs sm:text-sm">Registering...</span>
                   </div>
                 ) : (

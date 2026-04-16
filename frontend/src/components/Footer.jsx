@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -8,7 +9,9 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left space-y-4 sm:space-y-0">
           <div className="text-sm text-gray-700">
             <p>&copy; 2025 QuizMaster. All rights reserved.</p>
-            <p>Made with ❤️ by Team QuizMaster</p>
+            <p className="flex items-center justify-center sm:justify-start gap-1 mt-1">
+              Made with <Heart className="text-red-500 fill-red-500" size={14} /> by  <a href="https://github.com/vinodpachipala1" className="text-blue-500">Vinod</a>
+            </p>
           </div>
 
           <nav className="flex items-center space-x-6">
