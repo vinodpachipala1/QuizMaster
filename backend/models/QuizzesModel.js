@@ -21,6 +21,5 @@ export const getQuizById = async(id) => {
 export const getQuizzesByUserID = async(id) => {
     
     const result = await pool.query(`SELECT * FROM quizzes WHERE created_by = $1`,[1]);
-    console.log(result.rows)
     return result.rows;
 }

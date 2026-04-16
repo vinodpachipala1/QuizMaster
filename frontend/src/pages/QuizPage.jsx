@@ -75,15 +75,9 @@ const QuizPage = () => {
     fetchQuizData();
   }, [id, QUIZ_TIMER_END_TIME_KEY]);
 
-  useEffect(() => {
-    if (quizState !== "active" || timeLeft === null) {
-      return;
-    }
 
-    if (timeLeft <= 0) {
-      handleAutoSubmit();
-      return;
-    }
+  useEffect(() => {
+    if (quizState !== "active" || timeLeft === null) return;
 
     const intervalId = setInterval(() => {
       setTimeLeft((prevTime) => {
@@ -97,6 +91,7 @@ const QuizPage = () => {
 
     return () => clearInterval(intervalId);
   }, [timeLeft, quizState]);
+
 
   // Track previous path to detect actual route changes (not reloads)
   useEffect(() => {

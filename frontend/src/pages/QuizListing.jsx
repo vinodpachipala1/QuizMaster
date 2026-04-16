@@ -10,7 +10,7 @@ const QuizList = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const quizzesPerPage = 50;
+  const quizzesPerPage = 15;
 
   useEffect(() => {
     const getQuizes = async () => {

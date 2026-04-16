@@ -1,5 +1,5 @@
 import pool from "../config/db.js";
-
+ 
 export const cretaeAttempt = async(quizId, userId, total_correct, total_questions)=>{
     const result = await pool.query(
         `INSERT INTO attempts (quiz_id, user_id, total_correct, total_questions) VALUES ($1, $2, $3, $4)`,
@@ -8,7 +8,7 @@ export const cretaeAttempt = async(quizId, userId, total_correct, total_question
 
 export const getAttemptsByUserId = async(id) => {
     const result= await pool.query(
-        `SELECT * FROM attempts WHERE user_id = $1`, [id]
+        `SELECT a.id, a.quiz_id, a.user_id, a.total_correct, a.total_questions, a.attempted_at, q.title FROM attempts as a JOIN quizzes as q ON q.id = a.quiz_id WHERE user_id = $1`, [id]
     )
     return result.rows;
 }

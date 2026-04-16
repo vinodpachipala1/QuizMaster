@@ -2,6 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../config/BaseUrl";
+import {
+  LuSquareActivity,
+  LuSquarePen,
+  LuHistory,
+  LuTarget,
+  LuClipboardList,
+  LuHelpCircle,
+  LuFileEdit,
+  LuBarChart3,
+  LuLineChart,
+  LuClock3,
+  LuBookOpen,
+} from "react-icons/lu";
+
+import { PiBooksBold } from "react-icons/pi";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -193,10 +208,15 @@ const Dashboard = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleString("en-IN", {
       year: "numeric",
       month: "short",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata",
     });
   };
 
@@ -250,11 +270,13 @@ const Dashboard = () => {
           {/* Total Quizzes Attempted */}
           <div className="bg-white/70 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md border border-white/50 p-3 sm:p-4 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mb-2 sm:mb-3 mx-auto">
-              <span className="text-lg sm:text-xl text-white">🧠</span>
+              <LuSquareActivity size={22} className="text-white" />
             </div>
+
             <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-1">
               {stats.totalAttempts}
             </h3>
+
             <p className="text-xs sm:text-sm text-gray-600 leading-tight">
               Total Quizzes Attempted
             </p>
@@ -263,13 +285,15 @@ const Dashboard = () => {
           {/* Quizzes Created */}
           <div className="bg-white/70 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md border border-white/50 p-3 sm:p-4 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-2 sm:mb-3 mx-auto">
-              <span className="text-lg sm:text-xl text-white">📚</span>
+              <span className="text-lg sm:text-xl text-white">
+                <LuSquarePen />
+              </span>
             </div>
             <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-1">
               {stats.quizzesCreated}
             </h3>
             <p className="text-xs sm:text-sm text-gray-600 leading-tight">
-              Quizzes Created
+              Total Quizzes Created
             </p>
           </div>
         </div>
@@ -278,7 +302,7 @@ const Dashboard = () => {
           {/* Recent Quiz Attempts */}
           <div className="bg-white/70 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md border border-white/50 p-4 sm:p-6 hover:shadow-lg transition-all duration-300">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
-              <span className="mr-2 text-lg sm:text-xl">📊</span>
+              <LuHistory size={22} className="mr-2" />
               Your Quiz Attempts
             </h2>
 
@@ -286,7 +310,7 @@ const Dashboard = () => {
               <div className="space-y-3 sm:space-y-4">
                 {attemptedQuizzes.slice(0, 5).map((attempt, index) => {
                   const bestScore = attempt.best_score;
-                  const hasValidScore = bestScore > 0;
+                  const hasValidScore = bestScore >= 0;
 
                   return (
                     <div
@@ -295,7 +319,7 @@ const Dashboard = () => {
                     >
                       <div className="flex-1 min-w-0">
                         <h4 className="font-semibold text-gray-800 text-xs sm:text-sm line-clamp-1">
-                          {attempt.quiz_title || "Quiz"}
+                          {attempt.title || "Quiz"}
                         </h4>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mt-1 text-xs text-gray-600 space-y-1 sm:space-y-0">
                           <span className="flex items-center">
@@ -346,9 +370,9 @@ const Dashboard = () => {
                       <div className="text-right ml-2 flex-shrink-0">
                         <button
                           onClick={() => navigate(`/quiz/${attempt.quiz_id}`)}
-                          className="text-xs font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-2 sm:px-3 py-1 rounded-md shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                          className="text-xs font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-2 sm:px-3  py-2 md:py-3 rounded-md shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                         >
-                          View
+                          View Quiz
                         </button>
                       </div>
                     </div>
@@ -404,9 +428,9 @@ const Dashboard = () => {
                     <div className="flex space-x-1 sm:space-x-2 ml-2 flex-shrink-0">
                       <button
                         onClick={() => handleViewQuiz(quiz.id)}
-                        className="text-xs font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-2 sm:px-3 py-1 rounded-md shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="text-xs font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-2 sm:px-3 py-2 sm:py-3 rounded-md shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       >
-                        view
+                        View Deatil
                       </button>
                       <button
                         onClick={() => handleDeleteQuiz(quiz.id)}
@@ -575,7 +599,7 @@ const Dashboard = () => {
                 <div>
                   <h4 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
                     <span className="mr-2">📈</span>
-                    Quiz Attempt History
+                    Quiz Analytics
                   </h4>
 
                   {quizAttemptDetails[selectedQuiz.id] ? (
@@ -586,7 +610,7 @@ const Dashboard = () => {
                           {quizAttemptDetails[selectedQuiz.id].totalAttempts}
                         </div>
                         <div className="text-xs sm:text-sm text-blue-600">
-                          Total Attempts
+                          Attempts Received
                         </div>
                       </div>
 
@@ -594,7 +618,7 @@ const Dashboard = () => {
                       <div>
                         <h5 className="font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center text-sm sm:text-base">
                           <span className="mr-2">🕒</span>
-                          Attempt History (Newest First)
+                          Attempt Log (Newest First)
                         </h5>
                         {quizAttemptDetails[selectedQuiz.id].attempts.length >
                         0 ? (
@@ -636,11 +660,11 @@ const Dashboard = () => {
                                       </div>
                                     </div>
                                     <div className="text-right ml-2 flex-shrink-0">
-                                      <div className="text-xs text-gray-500 font-medium whitespace-nowrap">
-                                        {formatDate(attempt.attempted_at)}
+                                      <div className="text-xs text-gray-500 text-center font-medium whitespace-nowrap">
+                                        Attempted At
                                       </div>
                                       <div className="text-xs text-gray-400">
-                                        {formatTime(attempt.time_taken)}
+                                        {formatDate(attempt.attempted_at)}
                                       </div>
                                     </div>
                                   </div>
