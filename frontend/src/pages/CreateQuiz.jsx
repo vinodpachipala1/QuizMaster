@@ -141,7 +141,7 @@ const CreateQuizPage = () => {
       console.log(quizDetails);
 
       // API call to create quiz with all questions at once
-      const response = await axios.post(`${BaseUrl}/quizzes/createQuiz`, {
+      await axios.post(`${BaseUrl}/quizzes/createQuiz`, {
         quizData,
       });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../config/BaseUrl";
@@ -75,93 +75,7 @@ const QuizPage = () => {
     fetchQuizData();
   }, [id, QUIZ_TIMER_END_TIME_KEY]);
 
-
-  useEffect(() => {
-    if (quizState !== "active" || timeLeft === null) return;
-
-    const intervalId = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          handleAutoSubmit();
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [timeLeft, quizState]);
-
-
-  // Track previous path to detect actual route changes (not reloads)
-  useEffect(() => {
-    // Store the initial path when component mounts
-    const initialPath = location.pathname;
-    
-    return () => {
-      // Only remove timer if the user actually navigated to a different route
-      const currentPath = window.location.pathname;
-      if (currentPath !== initialPath && quizState === "active" && timeLeft > 0) {
-        localStorage.removeItem(QUIZ_TIMER_END_TIME_KEY);
-        console.log("Timer cleared - user navigated to different route");
-      }
-    };
-  }, [location.pathname, quizState, timeLeft, QUIZ_TIMER_END_TIME_KEY]);
-
-  // Alternative approach: Use beforeunload to detect page reload vs route change
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      // This runs only on page reload/close, not on route changes
-      // We don't remove the timer here, allowing it to persist through reloads
-      console.log("Page is reloading or closing - keeping timer");
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
-  const handleAnswerSelect = (option) => {
-    setUserAnswers((prev) => ({ ...prev, [currentQuestionIndex]: option }));
-  };
-
-  const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((prev) => prev - 1);
-    }
-  };
-
-  const handleQuestionNavigation = (index) => {
-    setCurrentQuestionIndex(index);
-  };
-
-  const handleSubmitQuiz = () => {
-    setShowSubmitModal(true);
-  };
-
-  const handleAutoSubmit = async () => {
-    // Clear the timer storage immediately
-    localStorage.removeItem(QUIZ_TIMER_END_TIME_KEY);
-    await submitQuizAttempt(true);
-  };
-
-  const submitQuizAttempt = async (isAutoSubmit = false) => {
+  const submitQuizAttempt = useCallback(async (isAutoSubmit = false) => {
     setSubmissionLoading(true);
 
     try {
@@ -199,6 +113,95 @@ const QuizPage = () => {
     } finally {
       setSubmissionLoading(false);
     }
+  }, [questions, userAnswers, userData, id, QUIZ_TIMER_END_TIME_KEY]);
+
+  useEffect(() => {
+    if (quizState !== "active") return;
+
+    const intervalId = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime === null || prevTime <= 0) {
+          clearInterval(intervalId);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [quizState]);
+
+  useEffect(() => {
+    if (timeLeft === 0 && quizState === "active") {
+      const autoSubmit = async () => {
+        localStorage.removeItem(QUIZ_TIMER_END_TIME_KEY);
+        await submitQuizAttempt(true);
+      };
+
+      autoSubmit();
+    }
+  }, [timeLeft, quizState, submitQuizAttempt, QUIZ_TIMER_END_TIME_KEY]);
+
+  // Track previous path to detect actual route changes (not reloads)
+  useEffect(() => {
+    // Store the initial path when component mounts
+    const initialPath = location.pathname;
+
+    return () => {
+      // Only remove timer if the user actually navigated to a different route
+      const currentPath = window.location.pathname;
+      if (currentPath !== initialPath && quizState === "active" && timeLeft > 0) {
+        localStorage.removeItem(QUIZ_TIMER_END_TIME_KEY);
+        console.log("Timer cleared - user navigated to different route");
+      }
+    };
+  }, [location.pathname, quizState, timeLeft, QUIZ_TIMER_END_TIME_KEY]);
+
+  // Alternative approach: Use beforeunload to detect page reload vs route change
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      // This runs only on page reload/close, not on route changes
+      // We don't remove the timer here, allowing it to persist through reloads
+      console.log("Page is reloading or closing - keeping timer");
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const handleAnswerSelect = (option) => {
+    setUserAnswers((prev) => ({ ...prev, [currentQuestionIndex]: option }));
+  };
+
+  const handleNext = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleQuestionNavigation = (index) => {
+    setCurrentQuestionIndex(index);
+  };
+
+  const handleSubmitQuiz = () => {
+    setShowSubmitModal(true);
   };
 
   const confirmSubmit = async () => {

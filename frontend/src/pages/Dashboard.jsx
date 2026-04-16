@@ -6,17 +6,9 @@ import {
   LuSquareActivity,
   LuSquarePen,
   LuHistory,
-  LuTarget,
-  LuClipboardList,
-  LuHelpCircle,
-  LuFileEdit,
-  LuBarChart3,
-  LuLineChart,
-  LuClock3,
-  LuBookOpen,
+
 } from "react-icons/lu";
 
-import { PiBooksBold } from "react-icons/pi";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -30,7 +22,45 @@ const Dashboard = () => {
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [modalView, setModalView] = useState("questions"); // "questions" or "stats"
 
+  // Process attempted quizzes to show each quiz only once with best score
+
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+
+    const processAttemptedQuizzes = (attempts) => {
+      const quizMap = new Map();
+
+      attempts.forEach((attempt) => {
+        const quizId = attempt.quiz_id;
+        const currentScore = calculateAttemptScore(attempt);
+
+        if (!quizMap.has(quizId)) {
+          // First time seeing this quiz, add it
+          quizMap.set(quizId, {
+            ...attempt,
+            best_score: currentScore,
+            first_attempt: attempt.attempted_at,
+            total_attempts: 1,
+          });
+        } else {
+          // Update with best score and track attempts
+          const existing = quizMap.get(quizId);
+          const newBestScore = Math.max(existing.best_score, currentScore);
+
+          quizMap.set(quizId, {
+            ...existing,
+            best_score: newBestScore,
+            total_attempts: existing.total_attempts + 1,
+          });
+        }
+      });
+
+      return Array.from(quizMap.values()).sort(
+        (a, b) => new Date(b.attempted_at) - new Date(a.attempted_at)
+      );
+    };
+    
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
@@ -128,39 +158,7 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [navigate]);
 
-  // Process attempted quizzes to show each quiz only once with best score
-  const processAttemptedQuizzes = (attempts) => {
-    const quizMap = new Map();
 
-    attempts.forEach((attempt) => {
-      const quizId = attempt.quiz_id;
-      const currentScore = calculateAttemptScore(attempt);
-
-      if (!quizMap.has(quizId)) {
-        // First time seeing this quiz, add it
-        quizMap.set(quizId, {
-          ...attempt,
-          best_score: currentScore,
-          first_attempt: attempt.attempted_at,
-          total_attempts: 1,
-        });
-      } else {
-        // Update with best score and track attempts
-        const existing = quizMap.get(quizId);
-        const newBestScore = Math.max(existing.best_score, currentScore);
-
-        quizMap.set(quizId, {
-          ...existing,
-          best_score: newBestScore,
-          total_attempts: existing.total_attempts + 1,
-        });
-      }
-    });
-
-    return Array.from(quizMap.values()).sort(
-      (a, b) => new Date(b.attempted_at) - new Date(a.attempted_at)
-    );
-  };
 
   // Calculate stats from the data
   const calculateStats = () => {
@@ -181,7 +179,6 @@ const Dashboard = () => {
         await axios.delete(`${BaseUrl}/quizzes/${quizId}`);
 
         // Refresh created quizzes after deletion
-        const token = localStorage.getItem("token");
         const userId = userData.id;
 
         const createdQuizzesRes = await axios.get(
@@ -218,13 +215,6 @@ const Dashboard = () => {
       hour12: true,
       timeZone: "Asia/Kolkata",
     });
-  };
-
-  const formatTime = (seconds) => {
-    if (!seconds || isNaN(seconds)) return "N/A";
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
   // Safe score calculation for individual attempts
@@ -327,13 +317,12 @@ const Dashboard = () => {
                             {hasValidScore ? (
                               <>
                                 <strong
-                                  className={`ml-1 ${
-                                    bestScore >= 70
+                                  className={`ml-1 ${bestScore >= 70
                                       ? "text-green-600"
                                       : bestScore >= 50
-                                      ? "text-yellow-600"
-                                      : "text-red-600"
-                                  }`}
+                                        ? "text-yellow-600"
+                                        : "text-red-600"
+                                    }`}
                                 >
                                   {Math.round(bestScore)}%
                                 </strong>
@@ -512,21 +501,19 @@ const Dashboard = () => {
               <div className="flex space-x-2 mt-3 sm:mt-4">
                 <button
                   onClick={() => setModalView("questions")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-xs sm:text-sm ${
-                    modalView === "questions"
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-xs sm:text-sm ${modalView === "questions"
                       ? "bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg focus:ring-blue-500"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400"
-                  }`}
+                    }`}
                 >
                   ❓ Questions
                 </button>
                 <button
                   onClick={() => setModalView("stats")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-xs sm:text-sm ${
-                    modalView === "stats"
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-xs sm:text-sm ${modalView === "stats"
                       ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg focus:ring-green-500"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400"
-                  }`}
+                    }`}
                 >
                   📊 Statistics
                 </button>
@@ -562,19 +549,17 @@ const Dashboard = () => {
                           {["A", "B", "C", "D"].map((option) => (
                             <div
                               key={option}
-                              className={`p-2 sm:p-3 rounded-lg border-2 transition-all duration-200 ${
-                                question.correct_option === option
+                              className={`p-2 sm:p-3 rounded-lg border-2 transition-all duration-200 ${question.correct_option === option
                                   ? "bg-green-100 border-green-500 text-green-800 shadow-sm"
                                   : "bg-white border-gray-300 text-gray-700"
-                              }`}
+                                }`}
                             >
                               <div className="flex items-center gap-1 sm:gap-2">
                                 <span
-                                  className={`font-bold text-xs sm:text-sm ${
-                                    question.correct_option === option
+                                  className={`font-bold text-xs sm:text-sm ${question.correct_option === option
                                       ? "text-green-700"
                                       : "text-gray-600"
-                                  }`}
+                                    }`}
                                 >
                                   {option}:
                                 </span>
@@ -621,7 +606,7 @@ const Dashboard = () => {
                           Attempt Log (Newest First)
                         </h5>
                         {quizAttemptDetails[selectedQuiz.id].attempts.length >
-                        0 ? (
+                          0 ? (
                           <div className="space-y-2 sm:space-y-3">
                             {quizAttemptDetails[selectedQuiz.id].attempts.map(
                               (attempt, index) => {
@@ -647,8 +632,8 @@ const Dashboard = () => {
                                                 score >= 70
                                                   ? "text-green-600 font-bold"
                                                   : score >= 50
-                                                  ? "text-yellow-600 font-bold"
-                                                  : "text-red-600 font-bold"
+                                                    ? "text-yellow-600 font-bold"
+                                                    : "text-red-600 font-bold"
                                               }
                                             >
                                               {Math.round(score)}%
