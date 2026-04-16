@@ -10,18 +10,18 @@ import attemptRouter from "./routes/attemptsRoute.js";
 const app = express();
 const port = 3001;
 
-app.use(
-  cors({
-    origin: "https://quiz-master-ivory.vercel.app",
-    credentials: true,
-  })
-);
 // app.use(
 //   cors({
-//     origin: "http://localhost:3000",
+//     origin: "https://quiz-master-ivory.vercel.app",
 //     credentials: true,
 //   })
 // );
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.set("trust proxy", 1);
 CreateTables();

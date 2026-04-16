@@ -6,9 +6,17 @@ import {
   LuSquareActivity,
   LuSquarePen,
   LuHistory,
-
+  LuSparkles,
+  LuFileText,
+  LuTarget,
+  LuTrash2,
+  LuCirclePlus,
+  LuCircleHelp,
+  LuChartColumn,
+  LuListChecks,
+  LuTrendingUp,
+  LuClock
 } from "react-icons/lu";
-
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,7 +31,6 @@ const Dashboard = () => {
   const [modalView, setModalView] = useState("questions"); // "questions" or "stats"
 
   // Process attempted quizzes to show each quiz only once with best score
-
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -158,8 +165,6 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [navigate]);
 
-
-
   // Calculate stats from the data
   const calculateStats = () => {
     const totalAttempts = attemptedQuizzes.length;
@@ -247,8 +252,8 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4">
         {/* Welcome Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-            Welcome back, {userData?.name || userData?.username} 👋
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-2">
+            Welcome back, {userData?.name || userData?.username} <LuSparkles className="text-yellow-500" size={28} />
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-2">
             Here's an overview of your quiz performance and created quizzes.
@@ -370,7 +375,9 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="text-center py-6 sm:py-8">
-                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">📝</div>
+                <div className="flex justify-center text-gray-400 mb-3 sm:mb-4">
+                  <LuFileText size={40} />
+                </div>
                 <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
                   No quiz attempts yet
                 </p>
@@ -387,7 +394,7 @@ const Dashboard = () => {
           {/* Your Created Quizzes */}
           <div className="bg-white/70 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md border border-white/50 p-4 sm:p-6 hover:shadow-lg transition-all duration-300">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
-              <span className="mr-2 text-lg sm:text-xl">🎯</span>
+              <LuTarget className="mr-2 text-purple-600" size={24} />
               Your Created Quizzes
             </h2>
 
@@ -414,7 +421,7 @@ const Dashboard = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="flex space-x-1 sm:space-x-2 ml-2 flex-shrink-0">
+                    <div className="flex items-center space-x-1 sm:space-x-2 ml-2 flex-shrink-0">
                       <button
                         onClick={() => handleViewQuiz(quiz.id)}
                         className="text-xs font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-2 sm:px-3 py-2 sm:py-3 rounded-md shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -423,9 +430,9 @@ const Dashboard = () => {
                       </button>
                       <button
                         onClick={() => handleDeleteQuiz(quiz.id)}
-                        className="text-xs font-semibold bg-gradient-to-r from-red-500 to-pink-500 text-white px-2 sm:px-3 py-1 rounded-md shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        className="flex items-center justify-center text-xs font-semibold bg-gradient-to-r from-red-500 to-pink-500 text-white w-8 sm:w-10 h-[32px] sm:h-[40px] rounded-md shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
-                        🗑️
+                        <LuTrash2 size={16} />
                       </button>
                     </div>
                   </div>
@@ -433,7 +440,9 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="text-center py-6 sm:py-8">
-                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🆕</div>
+                <div className="flex justify-center text-gray-400 mb-3 sm:mb-4">
+                  <LuCirclePlus size={40} />
+                </div>
                 <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
                   You haven't created any quizzes yet
                 </p>
@@ -460,15 +469,15 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <button
               onClick={() => navigate("/create-quiz")}
-              className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-lg sm:rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-sm sm:text-base"
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-lg sm:rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-sm sm:text-base"
             >
-              🎯 Create New Quiz
+              <LuTarget size={18} /> Create New Quiz
             </button>
             <button
               onClick={() => navigate("/quizzes")}
-              className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-lg sm:rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 text-sm sm:text-base"
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-lg sm:rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 text-sm sm:text-base"
             >
-              📋 View All Quizzes
+              <LuFileText size={18} /> View All Quizzes
             </button>
           </div>
         </div>
@@ -506,7 +515,7 @@ const Dashboard = () => {
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400"
                     }`}
                 >
-                  ❓ Questions
+                  <span className="flex items-center gap-1.5"><LuCircleHelp size={16} /> Questions</span>
                 </button>
                 <button
                   onClick={() => setModalView("stats")}
@@ -515,7 +524,7 @@ const Dashboard = () => {
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400"
                     }`}
                 >
-                  📊 Statistics
+                  <span className="flex items-center gap-1.5"><LuChartColumn size={16} /> Statistics</span>
                 </button>
               </div>
             </div>
@@ -526,7 +535,7 @@ const Dashboard = () => {
                 // Questions View
                 <div>
                   <h4 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
-                    <span className="mr-2">📝</span>
+                    <LuListChecks className="mr-2 text-blue-500" size={24} />
                     All Questions & Answers
                   </h4>
 
@@ -583,7 +592,7 @@ const Dashboard = () => {
                 // Statistics View
                 <div>
                   <h4 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
-                    <span className="mr-2">📈</span>
+                    <LuTrendingUp className="mr-2 text-green-500" size={24} />
                     Quiz Analytics
                   </h4>
 
@@ -602,7 +611,7 @@ const Dashboard = () => {
                       {/* Attempts List - Sorted by Time */}
                       <div>
                         <h5 className="font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center text-sm sm:text-base">
-                          <span className="mr-2">🕒</span>
+                          <LuClock className="mr-2 text-gray-500" size={20} />
                           Attempt Log (Newest First)
                         </h5>
                         {quizAttemptDetails[selectedQuiz.id].attempts.length >
